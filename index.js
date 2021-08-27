@@ -1,6 +1,7 @@
 const { Client, Collection } = require('discord.js');
 const bot = new Client();
 const { readdirSync } = require('fs');
+const { token } = require('./secret.json');
 
 const events = readdirSync('./events')
 for (const event of events) {
@@ -15,4 +16,4 @@ for (const command of commands) {
     bot.commands.set(commandFile.name, commandFile);
 }
 
-bot.login('ODAyMzc3NTYxOTU0ODQ0NzEy.YAuWVg.2rFMgC2logi5CAtOAIc34p_SIug');
+bot.login(token);
