@@ -26,9 +26,9 @@ module.exports = {
         }
         if (old.attachments) embed.fields.push({name: 'attachments', value: old.attachments.size});
         // stickers?
-        if (!message.attachments) return message.channel.send({embed});
+        if (!old.attachments) return message.channel.send({embed});
         let attachmentArr = [];
-        message.attachments.each(x => attachmentArr.push(x.url));
+        old.attachments.each(x => attachmentArr.push(x.url));
         return message.channel.send({embed, files: attachmentArr});
     }
 }
