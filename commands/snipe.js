@@ -8,12 +8,14 @@ module.exports = {
         let { deleted: cache } = servers[message.guild.id];
         if (!cache[0]) return message.channel.send('no deleted messages have been recorded as of yet');
         let idx;
-        isNaN(args[1]) ? idx = parseInt(args[1]) + 1 : idx = 0;
+        if (!args[1] || isNaN(args[1])) idx = 0;
+        else idx = Math.abs(parseInt(args[1])) + 1;
         let deletedMsg = cache[idx];
+        if (!cache[idx]) return message.channel.send('there is no deleted message in that slot');
         let embed = {
             color: 'RANDOM',
             title: `deleted message ${deletedMsg.id}`,
-            description: `sent by ${deletedMsg.author} in ${deletedMsg.channel}`,
+            description: `sent by <@${deletedMsg.authorID || deletedMsg.author.id}> in <#${deletedMsg.channelID || deletedMsg.channel.id}>`,
             fields: [
                 {
                     name: 'content',
@@ -27,8 +29,8 @@ module.exports = {
             ],
             footer: global.footer
         }
-        if (deletedMsg.attachments) embed.fields.push({name: 'attachments', value: deletedMsg.attachments.size});
-        if (deletedMsg.reactions) {
+        if (deletedMsg.attachments[0]) embed.fields.push({name: 'attachments', value: deletedMsg.attachments.length});
+        if (deletedMsg.reactions?.cache?.size > 0) {
             let reactionStr = [];
             deletedMsg.reactions.cache.each(reaction => {
                 let users = [];
@@ -38,9 +40,9 @@ module.exports = {
             embed.fields.push({name: 'reactions', value: reactionStr.join(', ')});
         }
         // stickers?
-        if (!deletedMsg.attachments) return message.channel.send({embed});
+        if (!deletedMsg.attachments[0]) return message.channel.send({embed});
         let attachmentArr = [];
-        deletedMsg.attachments.each(x => attachmentArr.push(x.url));
+        deletedMsg.attachments.forEach(x => attachmentArr.push(x.url));
         return message.channel.send({embed, files: attachmentArr});
     }
 }
