@@ -1,5 +1,5 @@
 const { Client, Collection } = require('discord.js');
-const bot = new Client();
+const bot = new Client({intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS']});
 const { readdirSync } = require('fs');
 const { token } = require('./secret.json');
 
