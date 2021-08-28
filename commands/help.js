@@ -32,7 +32,7 @@ module.exports = {
             fields: [],
             footer: global.footer
         }
-        bot.commands.each(command => helpEmbed.fields.push({
+        bot.commands.each(command => embed.fields.push({
             name: typeof command.name == 'string' ? command.name : `${prefix}${command.name}`, 
             value: command.description
         }));
